@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pleroma Entertainment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    /* Estilo geral retrô e colorido */
+    body {
+      background-color: black;
+      color: #91E0F2;
+      font-family: 'Press Start 2P', monospace;
+      text-align: center;
+      padding-top: 30px;
+      overflow: hidden;
+    }
+    h1 {
+      font-size: 36px;
+      color: #F23078;
+      text-shadow: 0px 0px 10px #F23078, 0px 0px 20px #BF36B6;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 18px;
+      color: #91E0F2;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 14px;
+      color: #F2784B;
+      margin: 10px 0;
+    }
+    input {
+      font-size: 14px;
+      padding: 10px;
+      border: 2px solid #BF36B6;
+      background-color: black;
+      color: #91E0F2;
+      outline: none;
+      text-align: center;
+      box-shadow: 0px 0px 10px #BF36B6;
+    }
+    button {
+      background-color: #F2784B;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0px 0px 10px #F2784B;
+    }
+    button:hover {
+      background-color: #A63232;
+      transform: scale(1.1);
+    }
+    #content {
+      display: none;
+      margin-top: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    #error-message {
+      color: #F23078;
+      font-size: 12px;
+      margin-top: 10px;
+      display: none;
+    }
+    img {
+      max-width: 80%;
+      margin-top: 20px;
+      box-shadow: 0px 0px 10px #91E0F2;
+    }
+    a {
+      color: #BF36B6;
+      text-decoration: none;
+      font-size: 14px;
+      display: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Moldura e scanlines para estética retrô */
+    .crt {
+      position: relative;
+      padding: 20px;
+      background: black;
+      border-radius: 15px;
+      box-shadow: 0px 0px 50px #F23078;
+      overflow: hidden;
+    }
+    .crt:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.2) 2px,
+        rgba(255, 255, 255, 0.05) 2px,
+        rgba(255, 255, 255, 0.05) 4px
+      );
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    /* Fundo de ruído animado */
+    .vhs-noise {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif') repeat;
+      opacity: 0.1;
+      pointer-events: none; /* Não interfere na interação */
+      z-index: 10;
+    }
+
+    /* Barra colorida */
+    .color-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: linear-gradient(to right, #F23078, #BF36B6, #91E0F2, #F2784B, #A63232);
+    }
+  </style>
+</head>
+<body>
+  <div class="vhs-noise"></div> <!-- Fundo animado com ruído VHS -->
+  <div class="crt">
+    <h1>Pleroma Entertainment</h1>
+    <h2>Bem-vindos!</h2>
+    <p>Resolva os enigmas para descobrir. Insira a senha correta abaixo.</p>
+    <div id="password-container">
+      <input type="password" id="password" placeholder="Digite a senha">
+      <button onclick="checkPassword()">Entrar</button>
+    </div>
+    <p id="error-message"></p>
+
+    <div id="content">
+      <p>Você realmente está interessado nisso.</p>
+      <img id="hint-image" src="https://imgur.com/a/p0wKS05.jpg" alt="Siga as pistas">
+      <p>Continue sua jornada.</p>
+      <div id="next-password-container" style="display: none;">
+        <input type="password" id="next-password" placeholder="Digite a senha">
+        <button onclick="checkNextPassword()">Avançar</button>
+      </div>
+      <a id="final-link" href="https://www.exemplo.com" target="_blank">Assista</a>
+    </div>
+  </div>
+
+  <div class="color-bar"></div> <!-- Barra colorida -->
+
+  <script>
+    function checkPassword() {
+      const senha = document.getElementById("password").value;
+      const errorMessage = document.getElementById("error-message");
+      const passwordContainer = document.getElementById("password-container");
+
+      if (senha === "dor") {
+        // Substituir o campo de senha inicial pelo próximo enigma
+        passwordContainer.style.display = "none";
+        document.getElementById("content").style.display = "block";
+        document.getElementById("next-password-container").style.display = "block";
+        errorMessage.style.display = "none";
+      } else {
+        errorMessage.style.display = "block";
+        errorMessage.textContent = "Senha incorreta. Tente novamente.";
+      }
+    }
+
+    function checkNextPassword() {
+      const nextSenha = document.getElementById("next-password").value;
+      const errorMessage = document.getElementById("error-message");
+      const finalLink = document.getElementById("final-link");
+
+      if (nextSenha === "367") {
+        finalLink.style.display = "block";
+        errorMessage.style.display = "none";
+      } else {
+        errorMessage.style.display = "block";
+        errorMessage.textContent = "Senha incorreta. Tente novamente.";
+      }
+    }
+  </script>
+</body>
+</html>
